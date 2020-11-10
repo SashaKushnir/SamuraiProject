@@ -1,0 +1,18 @@
+.nav{
+  background-color: deepskyblue;
+  grid-area: n;
+  padding: 15px;
+  margin: 0px;
+}
+.item  a{
+  text-decoration: none;
+  color: white;
+  padding: 15px;
+  margin-top: 50px;
+  border: dashed 1px #DF7000;
+}
+
+.item a.active{
+  color: gold;
+  font-weight: bolder ;
+}
