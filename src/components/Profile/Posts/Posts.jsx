@@ -12,11 +12,7 @@ const Posts = (props) => {
 
   let textAreaRef = React.createRef()
 
-  let addPost = () =>{
-      let  NewPostMessage = textAreaRef.current.value
-      props.addPost(NewPostMessage)
-      textAreaRef.current.value = ''
-  }
+  
 
   let symbolChahged = () => {
     let changedM1 = textAreaRef.current.value
@@ -28,7 +24,7 @@ const Posts = (props) => {
       <h3>Posts</h3>
       <textarea onChange = {symbolChahged} value ={props.newM} ref = {textAreaRef}  name="" id="" cols="30" rows="4"/>
       <div className={s.button}>
-        <button onClick={addPost}>Add post</button>
+        <button onClick={props.addPost}>Add post</button>
       </div>
       <div className={s.posts} >
         {mapPosts}

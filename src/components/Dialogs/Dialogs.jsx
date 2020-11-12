@@ -12,13 +12,13 @@ const Dialogs = (props) => {
         if (obj.me === true)
             return (
                 <div className = {s.RigthSide}>
-                <D_FriendDialog  message={obj.message} me={obj.me} who='me' />
+                <D_FriendDialog  message={obj.message}  me={obj.me} who='me' />
                 </div>
             )
         else
             return (
                 <div className ={s.LeftSide}>
-                <D_FriendDialog  message={obj.message} me={obj.me} who={props.dialogsInfo.d_FriendsInfo[3].name} />
+                <D_FriendDialog  message={obj.message} me={obj.me} who={props.dialogsInfo.who} />
                 </div>
             )
     })

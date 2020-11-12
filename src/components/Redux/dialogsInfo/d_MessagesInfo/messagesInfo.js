@@ -1,10 +1,13 @@
-let d_Messages = [
-    {id : 1, message : "Hello, Lets play something", me : true},
+import Babe from "./Babe/Babe"
+import Dad from "./Dad/Dad"
+import Mam from "./Mam/Mam"
 
-    {id : 2, message : "Football?", me : false},
-    {id : 3, message : "Yeaaahhhhh", me : false},
-    {id : 4, message : "Hello, Lets1111212 play something", me : true},
-    {id : 5, message : "Hello, Lets play something", me : true}
-  ]
+
+
+let d_Messages = {
+      Mam : Mam,
+      Dad : Dad,
+      Babe : Babe
+}
   
   export default d_Messages

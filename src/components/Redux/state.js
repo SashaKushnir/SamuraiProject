@@ -5,28 +5,36 @@ import profileInfo from './profileInfo/profileInfo'
 
 let state = {
     dialogsInfo: dialogsInfo,
-    profileInfo: profileInfo
+    profileInfo: profileInfo,
+   
 }
 
 let idMCount
 
 window.state = state
 
-export let addPost = (message) => {
+export let addPost = ()     => {
     idMCount = state.profileInfo.postsObjects.length + 1
     let newPost = {
-        id: idMCount, message: message, likesAm: 25
+        id: idMCount, message: profileInfo.newM, likesAm: 25
     }
     state.profileInfo.postsObjects.push(newPost)
     debugger
     toRend(state)
-
+    makeNewM('')
 }
 
 export let makeNewM = (message) => {
     state.profileInfo.newM = message
     toRend(state)
 }
+
+
+
+
+
+
+
 
 
 export default state
