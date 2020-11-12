@@ -1,5 +1,36 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-import {toRend} from './Render'
-import state from './components/Redux/state'
-debugger
+import state, { addPost, makeNewM, callToRend, sendMessage } from './components/Redux/state';
+
+
+
+
+
+
+export let toRend =   (state) => {
+    debugger
+  return ReactDOM.render(
+  <React.StrictMode>  
+    <App  state = {state} addPost = {addPost} makeNewM = {makeNewM} sendMessage = {sendMessage} />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+}
+
+
  toRend(state)
+
+ callToRend(toRend)
+
+
+
+
+ 
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
