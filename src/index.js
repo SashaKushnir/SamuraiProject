@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import state, { addPost, makeNewM, callToRend, sendMessage } from './components/Redux/state';
+import store from './components/Redux/state';
 
 
 
@@ -15,16 +15,16 @@ export let toRend =   (state) => {
     debugger
   return ReactDOM.render(
   <React.StrictMode>  
-    <App  state = {state} addPost = {addPost} makeNewM = {makeNewM} sendMessage = {sendMessage} />
+    <App  state = {state} addPost = {store.addPost.bind(store)} makeNewM = {store.makeNewM.bind(store)} sendMessage = {store.sendMessage.bind(store)} />
   </React.StrictMode>,
   document.getElementById('root')
 );
 }
 
 
- toRend(state)
+ toRend(store.getState())
 
- callToRend(toRend)
+store.callToRend(toRend)
 
 
 

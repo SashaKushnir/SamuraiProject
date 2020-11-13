@@ -7,7 +7,7 @@ import s from './Posts.module.css'
 
 
 
-const Posts = (props) => {
+const Posts =   (props) => {
   let mapPosts = props.postsObjects.map(obj => <Post postObj={obj} />)
 
   let textAreaRef = React.createRef()

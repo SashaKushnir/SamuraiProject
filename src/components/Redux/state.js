@@ -2,48 +2,50 @@
 import dialogsInfo from './dialogsInfo/dialogsInfo'
 import profileInfo from './profileInfo/profileInfo'
 
-
-let state = {
+let store = {
+ _state : {
     dialogsInfo: dialogsInfo,
     profileInfo: profileInfo
-}
-
-let toRend = () =>{
+},
+getState ()  {
+    return this._state
+},
+_toRend () {
     console.log('State has changed')
-}
+},
 
-window.state = state
-let idPostMCount
-export let addPost = (message) => {
-    idPostMCount = state.profileInfo.postsObjects.length + 1
+
+_idPostMCount : '', 
+  addPost  (message)  {
+    this._idPostMCount = this._state.profileInfo.postsObjects.length + 1
     let newPost = {
-        id: idPostMCount, message: message, likesAm: 25
+        id: this._idPostMCount, message: message, likesAm: 25
     }
-    state.profileInfo.postsObjects.push(newPost)
+    this._state.profileInfo.postsObjects.push(newPost)
   
-    toRend(state)
+    this._toRend(this._state)
 
-}
+},
 
-export const makeNewM = (message) => {
+  makeNewM  (message)  {
     debugger
-    state.profileInfo.newM = message
-    toRend(state)
-}
+    this._state.profileInfo.newM = message
+    this._toRend(this.state)
+},
 
-export  const callToRend = (callRend) => {
+ callToRend  (callRend)  {
     debugger
-    toRend = callRend
-}
+    this._toRend = callRend
+},
 
-let idMessageMCount
-export const sendMessage = (message) => {
+ _idMessageMCount : '',
+sendMessage (message)  {
     debugger
-    idMessageMCount = state.dialogsInfo.d_MessagesInfo.length + 1
-    let newMessageD = {id : idMessageMCount, message : message, me : true}
-    state.dialogsInfo.d_MessagesInfo.push(newMessageD)
+    this._idMessageMCount = this._state.dialogsInfo.d_MessagesInfo.length + 1
+    let newMessageD = {id : this._idMessageMCount, message : message, me : true}
+    this._state.dialogsInfo.d_MessagesInfo.push(newMessageD)
     debugger
-    toRend(state)
+    this._toRend(this._state)
 }
-
-export default state
+}
+export default store
