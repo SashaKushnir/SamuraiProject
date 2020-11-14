@@ -11,18 +11,18 @@ import store from './components/Redux/state';
 
 
 
-export let toRend =   (state) => {
+export let toRend =   () => {
     debugger
   return ReactDOM.render(
   <React.StrictMode>  
-    <App  state = {state} addPost = {store.addPost.bind(store)} makeNewM = {store.makeNewM.bind(store)} sendMessage = {store.sendMessage.bind(store)} />
+    <App  state = {store.getState()} dispatch = {store.dispatch.bind(store)} />
   </React.StrictMode>,
   document.getElementById('root')
 );
 }
 
 
- toRend(store.getState())
+ toRend()
 
 store.callToRend(toRend)
 

@@ -3,6 +3,7 @@ import s from './Dialogs.module.css'
 import D_Friend from './d_Friend/d_Friend'
 import D_FriendDialog from './d_FriendDialog/d_FriendDialog'
 
+const sendingCreateAction = (mes) => ({type : 'sendMessage', sendM : mes })
 
 const Dialogs = (props) => {
     let mapD_Friends = props.dialogsInfo.d_FriendsInfo.map(obj => <D_Friend name={obj.name} id={obj.id} />)
@@ -25,7 +26,7 @@ const Dialogs = (props) => {
     let messageRef = React.createRef()
 
     const sending = () => {
-        props.sendMessage(messageRef.current.value)
+        props.dispatch(sendingCreateAction(messageRef.current.value))
     }
    
 

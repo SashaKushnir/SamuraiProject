@@ -1,10 +1,9 @@
 
 import React, { createRef } from 'react'
+import { addPostCreateAction, makeNewMCreateAction } from '../../Redux/state'
 import Post from './Post/Post'
 
 import s from './Posts.module.css'
-
-
 
 
 const Posts =   (props) => {
@@ -13,14 +12,12 @@ const Posts =   (props) => {
   let textAreaRef = React.createRef()
 
   let addPost = () =>{
-      let  NewPostMessage = textAreaRef.current.value
-      props.addPost(NewPostMessage)
-      textAreaRef.current.value = ''
+      props.dispatch(addPostCreateAction(textAreaRef.current.value))
+      props.dispatch(makeNewMCreateAction(''))
   }
 
   let symbolChahged = () => {
-    let changedM1 = textAreaRef.current.value
-    props.makeNewM(changedM1)
+    props.dispatch(makeNewMCreateAction(textAreaRef.current.value))
   }
 
   return (
