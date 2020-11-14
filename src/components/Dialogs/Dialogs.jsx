@@ -2,8 +2,7 @@ import React, { createRef } from 'react'
 import s from './Dialogs.module.css'
 import D_Friend from './d_Friend/d_Friend'
 import D_FriendDialog from './d_FriendDialog/d_FriendDialog'
-
-const sendingCreateAction = (mes) => ({type : 'sendMessage', sendM : mes })
+import {currentChangingMAction,sendingCreateAction} from './../Redux/dialogsInfoReducer '
 
 const Dialogs = (props) => {
     let mapD_Friends = props.dialogsInfo.d_FriendsInfo.map(obj => <D_Friend name={obj.name} id={obj.id} />)
@@ -23,12 +22,17 @@ const Dialogs = (props) => {
                 </div>
             )
     })
-    let messageRef = React.createRef()
+   // let messageRef = React.createRef()
 
     const sending = () => {
-        props.dispatch(sendingCreateAction(messageRef.current.value))
+        props.dispatch(sendingCreateAction())
+        debugger
+        props.dispatch(currentChangingMAction(''))
     }
-   
+    
+    const changeMessageD = (e) => {
+        props.dispatch(currentChangingMAction(e.target.value))
+    }
 
     return (
 
@@ -42,7 +46,12 @@ const Dialogs = (props) => {
                 {mapD_Messages}
                </div>
                 <div className={s.EnterMessage}>
-                    <textarea ref = {messageRef}  name="" id="" cols="30" rows="1"></textarea>  <button onClick= {sending}>Send message</button>
+                    <textarea onChange={changeMessageD}
+                     value = {props.dialogsInfo.currentM}
+                     name="" id="" cols="30" rows="1"
+                     placeholder="Enter your message"></textarea>  
+                     
+                     <button onClick= {sending}>Send message</button>
                 </div>
             </div>
         </div>

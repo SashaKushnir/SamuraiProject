@@ -9,10 +9,11 @@
   color: white;
   padding: 15px;
   margin-top: 50px;
-  border: dashed 1px #DF7000;
+ 
 }
 
 .item a.active{
   color: gold;
   font-weight: bolder ;
+
 }
