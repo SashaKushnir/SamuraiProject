@@ -1,5 +1,5 @@
 import React from 'react'
-import s from './d_FriendDialog.module.css'
+
 
 const D_FriendDialog = (props) => {
 

@@ -1,6 +1,5 @@
 
 import React, { createRef } from 'react'
-import { addPostCreateAction, makeNewMCreateAction } from '../../Redux/profileInfoReducer'
 import Post from './Post/Post'
 import s from './Posts.module.css'
 
@@ -11,23 +10,24 @@ const Posts =   (props) => {
   let textAreaRef = React.createRef()
 
   let addPost = () =>{
-      props.dispatch(addPostCreateAction(textAreaRef.current.value))
-      props.dispatch(makeNewMCreateAction(''))
+      props.addPost()
+      props.makeNewM('')
   }
 
   let symbolChahged = () => {
-    props.dispatch(makeNewMCreateAction(textAreaRef.current.value))
+    props.makeNewM(textAreaRef.current.value)
   }
-
+ 
   return (
     <div>
       <h3>Posts</h3>
-      <textarea onChange = {symbolChahged} value ={props.newM}
+      <textarea onChange = { symbolChahged} 
+       value ={props.newM}
        ref = {textAreaRef}  name="" id="" cols="30" rows="4"
        placeholder = "Add your post"
        />
       <div className={s.button}>
-        <button onClick={addPost}>Add post</button>
+        <button onClick={ addPost}>Add post</button>
       </div>
       <div className={s.posts} >
         {mapPosts}

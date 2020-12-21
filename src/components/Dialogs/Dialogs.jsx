@@ -5,6 +5,7 @@ import D_FriendDialog from './d_FriendDialog/d_FriendDialog'
 import {currentChangingMAction,sendingCreateAction} from './../Redux/dialogsInfoReducer '
 
 const Dialogs = (props) => {
+    
     let mapD_Friends = props.dialogsInfo.d_FriendsInfo.map(obj => <D_Friend name={obj.name} id={obj.id} />)
  
     let mapD_Messages = props.dialogsInfo.d_MessagesInfo.map((obj) => {
@@ -26,7 +27,7 @@ const Dialogs = (props) => {
 
     const sending = () => {
         props.dispatch(sendingCreateAction())
-        debugger
+        
         props.dispatch(currentChangingMAction(''))
     }
     

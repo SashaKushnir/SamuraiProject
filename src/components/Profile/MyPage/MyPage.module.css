@@ -11,4 +11,15 @@
 }
 .NoImg{
     padding: 10px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+}
+
+.userPhotos{
+    height: 80px;
+    border-radius: 10px ;
+}
+.photos{
+    width: 100px;
+
 }

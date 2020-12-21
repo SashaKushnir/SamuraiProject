@@ -3,6 +3,8 @@
 
     let profileInfo = {
         postsObjects : postsObjects,
+
+          
         newM : 'hiBichesss'
     }
 

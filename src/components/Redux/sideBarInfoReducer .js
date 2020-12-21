@@ -36,23 +36,23 @@ let store = {
     },
 
     makeNewM(message) {
-        debugger
+        
         this._state.profileInfo.newM = message
         this._toRend()
     },
 
     callToRend(callRend) {
-        debugger
+        
         this._toRend = callRend
     },
 
 
     sendMessage(message) {
-        debugger
+        
         this._idMessageMCount = this._state.dialogsInfo.d_MessagesInfo.length + 1
         let newMessageD = { id: this._idMessageMCount, message: message, me: true }
         this._state.dialogsInfo.d_MessagesInfo.push(newMessageD)
-        debugger
+        
         this._toRend()
     },
     reloadMessage(mes) {
@@ -84,7 +84,7 @@ export const addPostCreateAction = (addM) => ({ type: addPostM, addM: addM })
 export const makeNewMCreateAction = (reloadPostM) => ({ type: makeNewM, reloadPostM: reloadPostM })
 //Dialogs
 export const sendingCreateAction = () => {
-    debugger
+    
     return ({ type: sendMessage, sendM: store._state.dialogsInfo.currentM })
 }
 export const currentChangingMAction = (mes) => ({ type: reloadMessage, reloadM: mes })

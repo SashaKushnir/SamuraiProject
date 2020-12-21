@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import store from './components/Redux/state';
+import store from './components/Redux/reduxStore';
+import { Provider } from 'react-redux';
 
 
 
@@ -12,11 +13,14 @@ import store from './components/Redux/state';
 
 
 export let toRend =   () => {
-    debugger
+  
   return ReactDOM.render(
+    <Provider store = {store}>
   <React.StrictMode>  
     <App  state = {store.getState()} dispatch = {store.dispatch.bind(store)} />
-  </React.StrictMode>,
+  </React.StrictMode>
+  </Provider>
+  ,
   document.getElementById('root')
 );
 }
@@ -24,7 +28,7 @@ export let toRend =   () => {
 
  toRend()
 
-store.callToRend(toRend)
+store.subscribe(toRend)
 
 
 

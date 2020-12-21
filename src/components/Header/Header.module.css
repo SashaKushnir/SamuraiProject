@@ -1,8 +1,21 @@
 .header{
   background-color: chartreuse;
-  grid-area: h;
- 
+ display: grid;
+ grid-template-columns: 1fr 3fr 1fr;
 }
 .header img {
-  width: 20px;
+  width: 80px;
+  border-radius: 10%;
+}
+.toRightSize{
+  text-align: right;
+  padding: 7px;
+  margin: 4px;
+}
+.Fetching{
+  text-align: right;
+  padding: 7px;
+  margin: 4px;  
+  width: 80px;
+  border-radius: 10%;
 }

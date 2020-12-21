@@ -23,15 +23,14 @@
     grid-area: r;
     text-align: right; 
     padding: 10px;
-    margin: 15px;
+    margin: 7px;
     font-weight : bold ;
-
-
+    text-align: right;
 }
 .LeftSide{
     grid-area: l;
     padding: 10px;
-    margin: 15px;
+    margin: 7px;
+    text-align: left;
     font-weight : bold ;
-    border: dashed 1px #DF7000;
 }
