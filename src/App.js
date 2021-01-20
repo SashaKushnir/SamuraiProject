@@ -1,39 +1,67 @@
 import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
-import Dialogs from './components/Dialogs/Dialogs';
+import DialogsContainer from './components/Dialogs/DialogsContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import Login from './components/Login/Login';
 import Music from './components/Music/Music';
 import Navbar from './components/NavBar/Navbar';
 import News from './components/News/News';
-import ProfileContainer from './components/Profile/ProfileContainer';
 import Settings from './components/Settings/Settings';
 import UsersContainer from './components/Users/UsersContainer';
+import {initialization} from './components/Redux/appReducer'
+import { connect } from 'react-redux';
+import loader from './images/VAyR.gif'
+import { getIsInitializedSel } from './components/Redux/selectors/selectors';
+import Profile from './components/Profile/Profile';
+class App extends React.Component {
 
-const App = (props) => {
- 
-  return (
-    <BrowserRouter>
-    <div className="app_wrapper">
-      <div className="myheader">
-      <HeaderContainer  />
-      </div>
-     
-      <Navbar />
+  componentDidMount = () => {
+    this.props.initialization()
+  }
 
-      <div className="app_wrapper_content">
-       
-        <Route path = '/dialogs' render ={ () => <Dialogs dialogsInfo = {props.state.dialogsInfo} dispatch = {props.dispatch}  />}/>
-        <Route path = '/profile/:userId?' render ={ () => <ProfileContainer />}/>
-        <Route path = '/news' component={News} />
-        <Route path = '/music' component={Music} />
-        <Route path = '/users' component={UsersContainer} />
-        <Route path = '/settings' component={Settings} />
+  render() {
+    
+    if (!this.props.isInitialized){
+      
+      return (
+        <div>
+          <img src = {loader}/>
+        </div>
+        )
+    }
+    return (
+      <BrowserRouter>
+        <div className="app_wrapper">
+          <div className="myheader">
+            <HeaderContainer />
+          </div>
 
-      </div>
-    </div>
-    </BrowserRouter>
-  );
+          <Navbar />
+
+          <div className="app_wrapper_content">
+
+            <Route path='/dialogs' render={() => <DialogsContainer />} />
+            <Route path='/profile/:userId?' render={() => <Profile />} />
+            <Route path='/news' component={News} />
+            <Route path='/music' component={Music} />
+            <Route path='/users' component={UsersContainer} />
+            <Route path='/settings' component={Settings} />
+            <Route path='/login' render={() => <Login />} />
+
+          </div>
+        </div>
+      </BrowserRouter>
+    );
+  }
 }
 
-export default App;
+let mstp = (state) => {
+  return {
+    isInitialized : getIsInitializedSel(state)
+  }
+}
+
+export default connect (mstp , {initialization})(App);
+
+

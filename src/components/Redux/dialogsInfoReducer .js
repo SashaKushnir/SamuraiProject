@@ -1,7 +1,6 @@
 
 let _idMessageMCount = ''
-const sendMessage = 'sendMessage'
-const reloadMessage = 'reloadMessage'
+const SEND_MESSAGE = 'SEND_MESSAGE'
 let dialogsPage = {
     d_MessagesInfo : [
     {id : 1, message : "Hello, Lets play something", me : true},    
@@ -18,21 +17,18 @@ let dialogsPage = {
 }
 const dialogsInfoReducer = (dialogsInfo = dialogsPage, action) => {
     switch (action.type) {
-        case sendMessage:
+        case SEND_MESSAGE:
             _idMessageMCount = dialogsInfo.d_MessagesInfo.length + 1
-            let newMessageD = { id: _idMessageMCount, message: dialogsInfo.currentM, me: true }
-            dialogsInfo.d_MessagesInfo.push(newMessageD)
-            return dialogsInfo
-        case reloadMessage:
-            dialogsInfo.currentM = action.reloadM
-            return dialogsInfo
+            let newMessageD = { id: _idMessageMCount, message: action.message, me: true }
+            return {
+                ...dialogsInfo,
+                d_MessagesInfo : [...dialogsInfo.d_MessagesInfo , newMessageD]
+            }
         default:
             return dialogsInfo
     }
 }
-export const sendingCreateAction = () => ({ type: sendMessage})
-
-export const currentChangingMAction = (mes) => ({ type: reloadMessage, reloadM: mes })
+export const sendingM = (message) => ({ type: SEND_MESSAGE, message})
 
 
 

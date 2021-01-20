@@ -1,20 +1,34 @@
 import { connect } from "react-redux";
-import {addPost, makeNewM,setProfile} from '../Redux/profileInfoReducer'
+import {friendsIn, addPost, setProfileStatus, updateProfileStatus} from '../Redux/profileInfoReducer'
 import React from 'react'
 import Profile from './Profile'
-import axios from "axios";
 import { withRouter } from "react-router-dom";
+import {withRedirect} from '../../hoc/hoc'
+import { compose } from "redux";
+import { getDefAuthorisedUserIdSel, getIsAuthSel, getPostsObjectsSel, getProfileByUserIdSel, getStatusSel } from "../Redux/selectors/selectors";
 
 class ProfileApiContainer extends React.Component {
 
     componentDidMount = () => {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${this.props.match.params.userId}`)
-        .then(response => {
-            this.props.setProfile(response.data)
-
-        })
+        
+        let userId = this.props.match.params.userId
+       
+        if(!userId){
+            userId = this.props.defAuthorisedUserId
+                if(!userId)
+                    this.props.history.push('/login')
+        }else{
+        this.props.friendsIn(userId)
+        }
+        this.props.setProfileStatus(userId)
     }
-
+    componentDidUpdate = (prev) => {
+        if(prev.status !== this.props.status){
+            this.setState({
+                status : this.props.status
+            })
+        }
+    }
     render (){
 
 
@@ -26,17 +40,18 @@ class ProfileApiContainer extends React.Component {
 }
 const mstp = (state) => {
     return {
-        postsObjects : state.profileInfo.postsObjects,
-          newM : state.profileInfo.newM,
-          profileByUserId : state.profileInfo.profileByUserId,
+        postsObjects : getPostsObjectsSel(state),
+        profileByUserId : getProfileByUserIdSel(state),
+        isAuth : getIsAuthSel(state),
+        status : getStatusSel(state),
+        defAuthorisedUserId : getDefAuthorisedUserIdSel(state)
     }
 }
-
-
-let WithRouterProfile = withRouter(ProfileApiContainer)
-
-export default connect(mstp, {
-    addPost, 
-    makeNewM,
-    setProfile
-})(WithRouterProfile)
+export default compose  (
+    withRouter,
+    connect(mstp, {
+        addPost, friendsIn,updateProfileStatus,
+        setProfileStatus
+    })
+   //withRedirect
+)(ProfileApiContainer)

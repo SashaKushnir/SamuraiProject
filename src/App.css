@@ -8,7 +8,7 @@
     ". n c ."
   ;
   grid-template-columns: 1fr 2fr 5fr 1fr ;
-  grid-template-rows: 120px auto;
+  grid-template-rows: 150px auto;
   grid-gap: 5px;
 }
 .app_wrapper_content{

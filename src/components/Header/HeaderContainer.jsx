@@ -1,31 +1,14 @@
-import Axios from 'axios'
+
 import React from 'react'
 import { connect } from 'react-redux'
 import Header from './Header'
-import { settingAuthorisation, toFetch, stopFetching } from '../Redux/authInfoReducer'
+import {toLogOut} from '../Redux/authInfoReducer'
 import  Fetching from '../../images/VAyR.gif'
+import { getIsAuthFetchingSel , getAuthDataSel , getIsAuthSel } from '../Redux/selectors/selectors'
+
 
 class HeaderContainer extends React.Component {
-    componentDidMount = () => {
-        Axios.get('https://social-network.samuraijs.com/api/1.0/auth/me', {
-            withCredentials: true
-        }
-        ).then(response => {
-            debugger
-            this.props.toFetch()
-            if (!response.data.resultCode) {
-                this.props.settingAuthorisation(response.data.data)
-            }
-            this.props.stopFetching()
-        })
-
-
-    }
-
-
     render() {
-        console.log(this.props)
-        //bad fetching
         return (
             <div>
                 { this.props.isFetching ?
@@ -42,14 +25,14 @@ class HeaderContainer extends React.Component {
 
 const mstp = (state) => {
     return {
-        data: state.authInfo.data,
-        isFetching: state.authInfo.isFetching,
-        isAuthorised: state.authInfo.isAuthorised
+        data: getAuthDataSel(state),
+        isFetching: getIsAuthFetchingSel(state),
+        isAuthorised: getIsAuthSel(state)
     }
 }
 
 export default connect(mstp,
-    { settingAuthorisation, toFetch, stopFetching })
+    {toLogOut})
     (HeaderContainer)
 
 

@@ -1,10 +1,11 @@
+import { profile } from "../../api/api"
 
 
 let _idPostMCount = ''
    
 const addPostM = 'AddPostM'
-const makeNewMes = 'makeNewMes'
 const setProfileC = 'setProfileC'
+const SET_STATUS = 'SET_STATUS'
 
 let profilePage = {
     postsObjects : [
@@ -12,7 +13,6 @@ let profilePage = {
     { id: 2, message: "Hello!!!", likesAm: 25 },
     { id: 3, message: "Hello!!!", likesAm: 25 }
   ],
-  newM : '',
   profileByUserId : {
     userId: '',
     lookingForAJob: '',
@@ -33,7 +33,8 @@ let profilePage = {
     large: ''
     }
 
-  }
+  },
+  status : ''
 }
 const profileInfoReducer = (profileInfo = profilePage, action) =>{
     
@@ -44,16 +45,11 @@ switch (action.type) {
             ...profileInfo,
             postsObjects : [...profileInfo.postsObjects, 
                     {id : _idPostMCount,
-                    message :  profileInfo.newM, 
+                    message :  action.post, 
                     likesAm : 25}
                 ]
         }
                 
-    case makeNewMes:
-        return {...profileInfo,
-            newM : action.reloadPostM
-        }
-
 case  setProfileC : 
 return {
     ...profileInfo,
@@ -77,14 +73,41 @@ return {
     large: action.userItem.photos.large
     }}
 }
+case SET_STATUS : 
+
+return {...profileInfo,
+        status : action.status    
+}
     default:
         return profileInfo
    }
 }
-export const addPost = () => ({ type: addPostM})
-export const makeNewM = (reloadPostM) => ({ type: makeNewMes, reloadPostM })
+export const addPost = (post) => ({ type: addPostM,post})
 export const setProfile = (userItem) => ({ type: setProfileC, userItem  })
+export const setStatus = (status) => ({type : SET_STATUS, status})
 
+export const friendsIn = (userId) => (dispatch) => {
+    profile.setFriendsProfile(userId)
+    .then(data => {
+    dispatch(setProfile(data))
+})
+}
+
+export const setProfileStatus = (userId) => (dispatch) => {
+    
+    profile.profileStatusUserIdGET(userId)
+    .then (response => {
+        dispatch(setStatus(response.data))
+        
+    })
+}
+export const updateProfileStatus = (status) => (dispatch) => {
+    profile.profileStatusPUT(status)
+    .then(response => {
+        if(response.data.resultCode === 0)
+        dispatch(setStatus(status)) 
+    })
+}
 export default profileInfoReducer
 
  

@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 
 
 
-export let toRend =   () => {
+export let toRend = () => {
   
   return ReactDOM.render(
     <Provider store = {store}>
@@ -24,6 +24,8 @@ export let toRend =   () => {
   document.getElementById('root')
 );
 }
+
+window.store = store
 
 
  toRend()

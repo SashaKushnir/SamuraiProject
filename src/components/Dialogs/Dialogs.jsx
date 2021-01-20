@@ -1,14 +1,19 @@
 import React, { createRef } from 'react'
 import s from './Dialogs.module.css'
-import D_Friend from './d_Friend/d_Friend'
 import D_FriendDialog from './d_FriendDialog/d_FriendDialog'
-import {currentChangingMAction,sendingCreateAction} from './../Redux/dialogsInfoReducer '
+import  D_Friend from './d_Friend/d_Friend'
+import { Field, reduxForm } from 'redux-form'
+import { Mytextarea } from '../common/Forms/Mytextarea'
+import { maxLengthCreator, requiredField } from '../FormControl/Validators/Validators'
+
+let maxLength = maxLengthCreator(20)
 
 const Dialogs = (props) => {
     
-    let mapD_Friends = props.dialogsInfo.d_FriendsInfo.map(obj => <D_Friend name={obj.name} id={obj.id} />)
+    
+    let mapD_Friends = props.d_FriendsInfo.map(obj => <D_Friend name={obj.name} id={obj.id} />)
  
-    let mapD_Messages = props.dialogsInfo.d_MessagesInfo.map((obj) => {
+    let mapD_Messages = props.d_MessagesInfo.map((obj) => {
 
         if (obj.me === true)
             return (
@@ -19,21 +24,16 @@ const Dialogs = (props) => {
         else
             return (
                 <div className ={s.LeftSide}>
-                <D_FriendDialog  message={obj.message} me={obj.me} who={props.dialogsInfo.who} />
+                <D_FriendDialog  message={obj.message} me={obj.me} who={"Mama"} />
                 </div>
             )
     })
    // let messageRef = React.createRef()
 
-    const sending = () => {
-        props.dispatch(sendingCreateAction())
-        
-        props.dispatch(currentChangingMAction(''))
+    const sending_ = (obj) => {
+        props.sendingM(obj.message)
     }
-    
-    const changeMessageD = (e) => {
-        props.dispatch(currentChangingMAction(e.target.value))
-    }
+ 
 
     return (
 
@@ -47,12 +47,7 @@ const Dialogs = (props) => {
                 {mapD_Messages}
                </div>
                 <div className={s.EnterMessage}>
-                    <textarea onChange={changeMessageD}
-                     value = {props.dialogsInfo.currentM}
-                     name="" id="" cols="30" rows="1"
-                     placeholder="Enter your message"></textarea>  
-                     
-                     <button onClick= {sending}>Send message</button>
+                <SendMessageForm onSubmit = {sending_}/>
                 </div>
             </div>
         </div>
@@ -63,3 +58,19 @@ const Dialogs = (props) => {
 }
 
 export default Dialogs
+
+
+let SendMessageForm = (props) => {
+    return (
+        <form action="" onSubmit = {props.handleSubmit}>
+                    <Field component = {Mytextarea}
+                    validate = {[requiredField, maxLength  ]}
+                        name="message"  cols="30" rows="4"
+                        placeholder="Enter your message"
+                        />
+                        <button>Send Message</button>
+                    
+        </form>
+    )
+}
+SendMessageForm = reduxForm({form : 'dialogueMessage'})(SendMessageForm)

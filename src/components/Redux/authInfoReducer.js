@@ -1,3 +1,5 @@
+import { stopSubmit } from "redux-form"
+import { auth } from "../../api/api"
 
 
 const SET_AUTHORISATION = 'SET_AUTHORISATION'
@@ -6,12 +8,20 @@ const STOP_FETCHING = 'STOP_FETCHING'
 
 let initialState = {
     data: {
-        id: null,
-        email: null,
+         id: null,
+        password: null,
         login: null,
+        rememberMe : false
     },
     isFetching: false,
     isAuthorised: false
+}
+const logoutedInfo = {
+    id: null,
+   password: null,
+   login: null,
+   rememberMe : false
+       
 }
 const authInfoReducer = (authInfo = initialState, action) => {
 
@@ -23,9 +33,9 @@ const authInfoReducer = (authInfo = initialState, action) => {
                 data: { ...authInfo.data,
                 id: action.mydata.id,
                 login: action.mydata.login,
-                email: action.mydata.email
+                password: action.mydata.password
                 },
-                isAuthorised: true
+                isAuthorised: action.isAuthorised
             }
         }
 
@@ -46,10 +56,48 @@ const authInfoReducer = (authInfo = initialState, action) => {
     }
 }
 
-export const settingAuthorisation = (mydata) => ({ type: SET_AUTHORISATION, mydata})
+export const settingAuthorisation = (mydata, isAuthorised) => ({ type: SET_AUTHORISATION, mydata, isAuthorised})
 export const toFetch = () => ({ type: TO_FETCH })
 export const stopFetching = () => ({ type: STOP_FETCHING })
+export const toAuthorise = () => (dispatch) => {
+    return auth.getAuthorisedData()
+    .then(data => {     
+    
+        dispatch(toFetch())
+        if (!data.resultCode) {
+            dispatch(settingAuthorisation(data.data, true))
+        }
+        dispatch(stopFetching())
+    })
+}
 
+export const  toLogIn = ({email, password, rememberMe = false, captcha = null}) => dispatch => {
+    
+    auth.logIn(email, password, rememberMe , captcha ).then(response => {
+        
+        if(!response.resultCode){
+            dispatch(toAuthorise())
+        }
+        else {
+            let error = response.messages.length > 0 ? response.messages[0] : 'Uncaught error'
+            dispatch(stopSubmit('login', {_error : error}))
+        }
+    })
+}
+
+export const toLogOut = () => dispatch => {
+    
+    auth.logOut().then (response => {
+        
+        if(!response.resultCode){
+            dispatch(settingAuthorisation(logoutedInfo, false))
+        }
+        else {
+            console.warn('Failed!!!')
+        }
+      
+    })
+}
 export default authInfoReducer
 
 

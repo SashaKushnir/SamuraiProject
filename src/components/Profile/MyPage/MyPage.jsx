@@ -2,16 +2,19 @@ import UserDefaultPhoto from '../../../images/DefaultAvatar.jpg'
 import s from './MyPage.module.css'
 import React from 'react'
 import Contacts from './Contacts/Contacts'
+import ProfileStatus from './Contacts/ProfileStatusWithHooks'
 
-const MyPage = (props) => {
+const MyPage = React.memo (props => {
   
   let contacts = Object.keys(props.profileByUserId.contacts).map(key => {
     return props.profileByUserId.contacts[key] ?  <Contacts value= {props.profileByUserId.contacts[key]} key1= {key} /> : null})
+
   return (
     <div>
       <div className={s.MyPage}>
         <img src="https://img4.goodfon.ru/wallpaper/nbig/9/b6/strazhi-galaktiki-grut-groot-marvel-marvel-baby-groot-guardi.jpg" alt="" />
       </div>
+      <ProfileStatus updateProfileStatus={props.updateProfileStatus} status = {props.status} cantChangeStatus = {props.cantChangeStatus} />
       {props.match.params.userId === undefined ? null :
         <div className={s.NoImg}>
           <div>
@@ -34,6 +37,6 @@ const MyPage = (props) => {
       }
     </div>
   )
-}
+})
 
 export default MyPage

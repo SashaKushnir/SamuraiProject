@@ -1,14 +1,14 @@
 
 import React from 'react'
-import Posts from './Posts/Posts'
-import MyPage from './MyPage/MyPage'
+import Posts from './Posts/PostsContainer'
+import MyPage from './MyPage/MyPageContainer'
 
-const Profile = (props) => {
+const Profile = () => {
   
   return (
     <div >
-      <MyPage {...props}/>
-      <Posts  {...props} />
+      <MyPage />
+      <Posts   />
     </div>
   )
 }

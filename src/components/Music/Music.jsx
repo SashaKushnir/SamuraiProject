@@ -3,7 +3,7 @@ import { db } from "../../firebase/firebase";
 
 
 
-const Music = () => {
+const Music = (props) => {
 
     const [posts, setPosts] = useState([]);
     useEffect(() => {

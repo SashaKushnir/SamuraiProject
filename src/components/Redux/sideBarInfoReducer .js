@@ -16,7 +16,7 @@ let store = {
     },
     _idPostMCount: '',
     _toRend() {
-        console.log('State has changed')
+      
     },
     _idMessageMCount: '',
 

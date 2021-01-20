@@ -14,7 +14,6 @@ let store = {
     },
 
     _toRend() {
-        console.log('State has changed')
     },
 
 

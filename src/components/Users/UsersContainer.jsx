@@ -1,38 +1,28 @@
 
 
-import {changeCurrentPager, setUser, setTotalCounter, stopFetching, isFetchingA} from '../Redux/UsersReducer'
+import {getUsersTK, unfollowCircle, followCircle, getUserByCursorTK} from '../Redux/UsersReducer'
 import Users from './Users'
 import { connect } from 'react-redux'
-import * as axios from 'axios'
+
 import React from 'react'
 import loader from '../../images/VAyR.gif'
+import { compose } from 'redux'
+import { getUserListSel, getCurrentUserPageSel, getTotalUserPagesSel, getPageNumbersSel,
+     getTotalUserItemsSel, getIsUserFetchingSel, getButtonIsEnableSel } from '../Redux/selectors/selectors'
+
 
 class UserAPIContainer extends React.Component {
    
-    componentDidMount = () => {
-        this.props.isFetchingA()
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentUserPage}&count=${this.props.pageNumber}`)
-            .then(response => {
-                this.props.setTotalCounter(response.data.totalCount)
-                this.props.setUser(response.data.items)
-                this.props.stopFetching()
-            })
+    componentDidMount = () => { 
+        this.props.getUsersTK(this.props.currentUserPage, this.props.pageNumber)
+
     }
 
     changeCurrentPage_ = (index) => {
-        this.props.isFetchingA()
-        this.props.changeCurrentPager(index)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${index}&count=${this.props.pageNumber}`)
-        .then(response => {
-            this.props.setUser(response.data.items)
-            this.props.stopFetching()
-        })
+        this.props.getUserByCursorTK(index, this.props.pageNumber)
     }
 
-  
-
     render() {
-        
         return (
         <>
             {this.props.isFetching ? <img src = {loader}/> : null }
@@ -40,8 +30,6 @@ class UserAPIContainer extends React.Component {
             />
         </>
         )
-    
-
     }
 
 }
@@ -49,19 +37,21 @@ class UserAPIContainer extends React.Component {
 const mapStateToProps = (state) => {
     
     return {
-        UserList : state.usersInfo.UserList,
-        currentUserPage : state.usersInfo.currentUserPage,
-        totalUserPages : state.usersInfo.totalUserPages,
-        pageNumber : state.usersInfo.pageNumber,
-        totalUserItems : state.usersInfo.totalUserItems,
-        isFetching : state.usersInfo.isFetching
+        UserList : getUserListSel(state),
+        currentUserPage : getCurrentUserPageSel(state),
+        totalUserPages : getTotalUserPagesSel(state),
+        pageNumber : getPageNumbersSel(state),
+        totalUserItems : getTotalUserItemsSel(state),
+        isFetching : getIsUserFetchingSel(state),
+        buttonIsEnable : getButtonIsEnableSel(state)
     }
 
 }
 
-export default  connect(mapStateToProps,
-    {changeCurrentPager, setUser, setTotalCounter, stopFetching, isFetchingA})
-    (UserAPIContainer)
+export default compose ( 
+ connect(mapStateToProps,
+    {getUsersTK, unfollowCircle, followCircle, getUserByCursorTK})  
+)(UserAPIContainer)
 
 
 
