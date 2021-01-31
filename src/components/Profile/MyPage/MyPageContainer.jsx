@@ -1,71 +1,68 @@
 import { connect } from "react-redux";
-import {friendsIn, addPost, setProfileStatus, updateProfileStatus} from '../../Redux/profileInfoReducer'
+import {
+    friendsIn, addPost, setProfileStatus, updateProfileStatus,
+    savePhoto, updateProfileData
+} from '../../Redux/profileInfoReducer'
 import React from 'react'
 import { withRouter } from "react-router-dom";
-import {withRedirect} from '../../../hoc/hoc'
 import { compose } from "redux";
 import { getDefAuthorisedUserIdSel, getIsAuthSel, getProfileByUserIdSel, getStatusSel } from "../../Redux/selectors/selectors";
 import MyPage from "./MyPage";
-  window.page = []
+window.page = []
 class MyPageContainer extends React.PureComponent {
-    
+
     state = {
-        userId : null
+        userId: null
+    }
+    componentUpMounted = () => {
+        let temp
+        if (this.state.userId !== this.props.match.params.userId)
+            temp = this.props.match.params.userId
+        if (!temp)
+            if (temp !== this.props.defAuthorisedUserId)
+                temp = this.props.defAuthorisedUserId
+        if (!temp)
+            this.props.history.push('/login')
+
+        this.props.friendsIn(temp)
+        this.props.setProfileStatus(temp)
+        if (this.state.userId !== temp)
+            this.setState({
+                userId: temp
+            })
     }
 
     componentDidMount = () => {
-        debugger
-       let temp
-        if(this.state.userId !== this.props.match.params.userId) 
-        temp  = this.props.match.params.userId
-        
-      
-        if(!temp){
-            if(temp !== this.props.defAuthorisedUserId)
-            temp = this.props.defAuthorisedUserId
-            
-                if(!temp)
-                    this.props.history.push('/login')
-        } 
-        this.props.friendsIn(temp)  
-        this.props.setProfileStatus(temp)
-        if(this.state.userId !== temp){
-            this.setState({
-                userId : temp     
-            })
-        }
+        this.componentUpMounted()
+
     }
-    // componentDidUpdate = (prev) => {
-    //     if(prev.status !== this.props.status){
-    //         this.setState({
-    //             status : this.props.status
-    //         })
-    //     }
-    // }
-    render (){ 
-        debugger
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.match.params.userId !== prevProps.match.params.userId)
+            this.componentUpMounted()
+    }
+    render() {
         let cantChangeStatus = (this.state.userId && this.state.userId !== this.props.defAuthorisedUserId) ? true : false
         window.page.push(this.props)
-        console.log("Render", this.props)
-        return (
-        <MyPage {...this.props} cantChangeStatus = {cantChangeStatus}/>
-        )
 
+        return (
+            <div>
+                <MyPage  {...this.props} cantChangeStatus={cantChangeStatus} />
+            </div>
+        )
     }
 }
 const mstp = (state) => {
     return {
-        profileByUserId : getProfileByUserIdSel(state),
-        isAuth : getIsAuthSel(state),
-        status : getStatusSel(state),
-        defAuthorisedUserId : getDefAuthorisedUserIdSel(state)
+        profileByUserId: getProfileByUserIdSel(state),
+        isAuth: getIsAuthSel(state),
+        status: getStatusSel(state),
+        defAuthorisedUserId: getDefAuthorisedUserIdSel(state)
     }
 }
-export default compose  (
+export default compose(
     withRouter,
     connect(mstp, {
-        addPost, friendsIn,updateProfileStatus,
-        setProfileStatus
+        addPost, friendsIn, updateProfileStatus,
+        setProfileStatus, savePhoto, updateProfileData
     })
-   //withRedirect
 )(MyPageContainer)

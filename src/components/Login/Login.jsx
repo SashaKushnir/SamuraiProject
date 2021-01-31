@@ -15,6 +15,7 @@ let maxLength = maxLengthCreator(15)
 
 const Login = (props) => {
     const login = (val) => {
+        console.log("LoginValue",val) 
         props.toLogIn(val)
     }
 
@@ -25,7 +26,7 @@ const Login = (props) => {
                 Login
             </h1>
             <div>
-                <LoginFormComponent onSubmit={login} />
+                <LoginFormComponent onSubmit={login} captchaUrl = {props.captchaUrl} />
             </div>
         </div>
     )
@@ -33,13 +34,13 @@ const Login = (props) => {
 }
 
 
-const mstp = (state) => ({isAuthorised : getIsAuthSel(state)})
+const mstp = (state) => ({isAuthorised : getIsAuthSel(state), captchaUrl : state.authInfo.captchaUrl})
 export default compose(
     connect( mstp ,{toLogIn})
 )(Login)
 
 
-let LoginFormComponent = (props) => {
+let LoginFormComponent = ({captchaUrl,...props}) => {
 
     return (<form onSubmit={props.handleSubmit} >
         <div>
@@ -56,6 +57,11 @@ let LoginFormComponent = (props) => {
             {props.error}
         </div>
         }
+        <div>
+        {captchaUrl && <img src = {captchaUrl} alt ="Captcha image"/>}
+        </div>
+        {captchaUrl && <Field name = "captcha" placeholder = "write info from image" 
+        component = "input"   />}
         <button>Login</button>
     </form>
     )

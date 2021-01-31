@@ -9,7 +9,6 @@ window.posts = []
 class PostsContainer extends React.PureComponent {
     render (){
         window.posts.push(this.props)
-        console.log("Posts Render")
         return (
             <Posts {...this.props}/>
         )

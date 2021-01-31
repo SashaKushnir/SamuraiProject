@@ -30,7 +30,6 @@ export const initialization = () => (dispatch) =>  {
 
     Promise.all([autorisePromise])
     .then(() => {
-        
         dispatch(setInitialized())
     })
 }

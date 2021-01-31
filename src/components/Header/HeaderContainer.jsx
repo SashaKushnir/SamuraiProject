@@ -2,13 +2,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Header from './Header'
-import {toLogOut} from '../Redux/authInfoReducer'
 import  Fetching from '../../images/VAyR.gif'
 import { getIsAuthFetchingSel , getAuthDataSel , getIsAuthSel } from '../Redux/selectors/selectors'
+import { toLogOut } from '../Redux/authInfoReducer'
 
 
 class HeaderContainer extends React.Component {
     render() {
+        
         return (
             <div>
                 { this.props.isFetching ?
@@ -20,7 +21,6 @@ class HeaderContainer extends React.Component {
             </div>
         )
     }
-
 }
 
 const mstp = (state) => {

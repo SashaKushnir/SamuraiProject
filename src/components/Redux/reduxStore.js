@@ -1,6 +1,6 @@
-import {applyMiddleware, combineReducers, createStore} from "redux"
+import {applyMiddleware, combineReducers, createStore, compose} from "redux"
 import authInfoReducer from "./authInfoReducer"
-import dialogsInfoReducer from "./dialogsInfoReducer "
+import dialogsInfoReducer from "./dialogsInfoReducer"
 import profileInfoReducer from "./profileInfoReducer"
 import usersInfoReducer from "./UsersReducer"
 import appInfoReducer from './appReducer'
@@ -16,6 +16,16 @@ let reducersList = combineReducers({
     appInfo : appInfoReducer
 }) 
 
-let store = createStore(reducersList, applyMiddleware(thunkMW))
+const composeEnhancers =
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+    }) : compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(thunkMW)
+);
+let store = createStore(reducersList, enhancer)
 
 export default store

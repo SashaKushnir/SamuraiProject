@@ -11,24 +11,23 @@ let maxLength = maxLengthCreator(20)
 const Dialogs = (props) => {
     
     
-    let mapD_Friends = props.d_FriendsInfo.map(obj => <D_Friend name={obj.name} id={obj.id} />)
+    let mapD_Friends = props.d_FriendsInfo.map(obj => <D_Friend name={obj.name} id={obj.id} key = {obj.id}  />)
  
     let mapD_Messages = props.d_MessagesInfo.map((obj) => {
 
         if (obj.me === true)
             return (
-                <div className = {s.RigthSide}>
+                <div key = {obj.id}  className = {s.RigthSide}>
                 <D_FriendDialog  message={obj.message}  me={obj.me} who='me' />
                 </div>
             )
         else
             return (
-                <div className ={s.LeftSide}>
-                <D_FriendDialog  message={obj.message} me={obj.me} who={"Mama"} />
+                <div key = {obj.id} className ={s.LeftSide}>
+                <D_FriendDialog    message={obj.message} me={obj.me} who={"Mama"} />
                 </div>
             )
     })
-   // let messageRef = React.createRef()
 
     const sending_ = (obj) => {
         props.sendingM(obj.message)
@@ -36,7 +35,6 @@ const Dialogs = (props) => {
  
 
     return (
-
         <div className={s.dialogs_wrapper}>
             <div  className={s.d_Friends} >
                 {mapD_Friends}
@@ -51,12 +49,8 @@ const Dialogs = (props) => {
                 </div>
             </div>
         </div>
-            
-        
     )
-
 }
-
 export default Dialogs
 
 

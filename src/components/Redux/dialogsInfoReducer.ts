@@ -15,10 +15,10 @@ let dialogsPage = {
     { name: 'Dad', id: 4 }
   ]
 }
-const dialogsInfoReducer = (dialogsInfo = dialogsPage, action) => {
+const dialogsInfoReducer = (dialogsInfo = dialogsPage, action : action) => {
     switch (action.type) {
         case SEND_MESSAGE:
-            _idMessageMCount = dialogsInfo.d_MessagesInfo.length + 1
+            _idMessageMCount = (dialogsInfo.d_MessagesInfo.length + 1).toString()
             let newMessageD = { id: _idMessageMCount, message: action.message, me: true }
             return {
                 ...dialogsInfo,
@@ -28,7 +28,11 @@ const dialogsInfoReducer = (dialogsInfo = dialogsPage, action) => {
             return dialogsInfo
     }
 }
-export const sendingM = (message) => ({ type: SEND_MESSAGE, message})
+export const sendingM = (message : string) => ({ type: SEND_MESSAGE, message})
+type action = {
+    type : string
+    message : string
+}
 
 
 

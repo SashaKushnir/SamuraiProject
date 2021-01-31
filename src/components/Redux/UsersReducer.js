@@ -8,6 +8,7 @@ const stopFetch = 'stopFetch'
 const SET_FOLLOWED = 'SET_FOLLOWED'
 const SET_UNFOLLOWED = 'SET_UNFOLLOWED'
 const BUTTON_AVAILABLE = 'BUTTON_AVAILABLE'
+const SETTING_CURRENT_ARRAY_ELEMENT = 'SETTING_CURRENT_ARRAY_ELEMENT'
 
 
 
@@ -19,7 +20,8 @@ let initialUser = {
    pageNumber: 5,
    totalUserItems: '',
    isFetching: false,
-   buttonIsEnable: []
+   buttonIsEnable: [],
+   currentArrayElement : 1
 
 }
 
@@ -100,8 +102,15 @@ const usersInfoReducer = (usersState = initialUser, action) => {
             ...usersState,
             buttonIsEnable: [...usersState.buttonIsEnable, action.ID]
          }
+      
 
+      case SETTING_CURRENT_ARRAY_ELEMENT : {
 
+         return {
+            ...usersState,
+            currentArrayElement : action.currAE
+         }
+      }
       default:
          return usersState
    }
@@ -115,6 +124,7 @@ window.u = initialUser
 export const setUser = (array) => ({ type: setU, array: array })
 export const setTotalCounter = (totalCount) => ({ type: setTotalCount, totalCount })
 export const changeCurrentPager = (newPageIndex) => ({ type: changeCurrentPage, newPageIndex })
+export const setCurrentArrayElement= (currAE) => ({ type: SETTING_CURRENT_ARRAY_ELEMENT, currAE })
 export const isFetchingA = () => ({ type: toFetch })
 export const stopFetching = () => ({ type: stopFetch })
 export const setFollowed = (findex) => ({ type: SET_FOLLOWED, findex })
@@ -140,6 +150,21 @@ export const getUserByCursorTK = (index, pageNumber) => (dispatch) => {
       dispatch(stopFetching())
    })
 } 
+export const getLocalUsersByDimaTK = (arrayIndex, pageNumber) => (dispatch) => {
+   dispatch(isFetchingA())
+   dispatch(setCurrentArrayElement(arrayIndex))
+   users.getUsers(arrayIndex, pageNumber)
+   .then(data => {
+      dispatch(setUser(data.items))
+      dispatch(stopFetching())
+   })
+} 
+export const setNonLocalUsersByDimaTK = (arrayIndex, pageNumber, currentDouble) => (dispatch) => {
+   dispatch(getLocalUsersByDimaTK(arrayIndex,pageNumber))
+   dispatch(changeCurrentPager(currentDouble))
+
+} 
+
 export const unfollowCircle = (idForBut, index) => (dispatch) =>{
 dispatch(buttonIsAvaiable(false, idForBut))
 follow.unfollowReq(idForBut)

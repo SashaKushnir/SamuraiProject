@@ -6,9 +6,9 @@ import MyPage from './MyPage/MyPageContainer'
 const Profile = () => {
   
   return (
-    <div >
+    <div className = "AllText">
       <MyPage />
-      <Posts   />
+      <Posts />
     </div>
   )
 }

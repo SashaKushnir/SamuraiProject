@@ -13,7 +13,6 @@ const ProfileStatusWithHooks = (props) =>  {
     },[props.status])
 
     const onStatusChange = (e) => {
-        console.log(e.target.value)
         setStatusMode(e.target.value)
     }   
     const deactivateeditmode = () => {
@@ -26,7 +25,7 @@ const ProfileStatusWithHooks = (props) =>  {
     }
 
         return (
-            <div>
+            <span>
                 
                 {!editMode &&
                 <span onClick = {activateeditmode}>
@@ -37,7 +36,7 @@ const ProfileStatusWithHooks = (props) =>  {
                    onBlur = {deactivateeditmode} value = {status}
                     type="text" name ={'profilestatus'} component = {'input'}/>
                 }
-                </div>
+            </span>
         )
 }
 

@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form"
 import { profile } from "../../api/api"
 
 
@@ -6,6 +7,8 @@ let _idPostMCount = ''
 const addPostM = 'AddPostM'
 const setProfileC = 'setProfileC'
 const SET_STATUS = 'SET_STATUS'
+const UPDATING_PHOTO = 'UPDATING_PHOTO'
+const SETTING_NEW_PROFILE_DATA = 'SETTING_NEW_PROFILE_DATA'
 
 let profilePage = {
     postsObjects : [
@@ -51,6 +54,7 @@ switch (action.type) {
         }
                 
 case  setProfileC : 
+
 return {
     ...profileInfo,
     profileByUserId :  {...profileInfo.profileByUserId,
@@ -78,18 +82,39 @@ case SET_STATUS :
 return {...profileInfo,
         status : action.status    
 }
+case UPDATING_PHOTO:
+    return {
+        ...profileInfo,
+        profileByUserId : {...profileInfo.profileByUserId,
+            photos : {...action.photoObj}
+        }
+    } 
+
+case SETTING_NEW_PROFILE_DATA :
+    return {
+        ...profileInfo,
+        profileByUserId : {...action.newObjData,
+        contacts  : {...action.newObjData.contacts},
+        photos : action.newObjData.photos || profileInfo.profileByUserId.photos 
+        },
+    }
+
     default:
         return profileInfo
    }
 }
+
 export const addPost = (post) => ({ type: addPostM,post})
 export const setProfile = (userItem) => ({ type: setProfileC, userItem  })
 export const setStatus = (status) => ({type : SET_STATUS, status})
+export const updatingPhoto = (photoObj) => ({type : UPDATING_PHOTO, photoObj})
+const setNewProfileData = (newObjData) => ({type : SETTING_NEW_PROFILE_DATA, newObjData})
 
 export const friendsIn = (userId) => (dispatch) => {
     profile.setFriendsProfile(userId)
     .then(data => {
-    dispatch(setProfile(data))
+    console.log("Setting ProfileDaata" , data)
+    dispatch(setNewProfileData(data))
 })
 }
 
@@ -98,7 +123,6 @@ export const setProfileStatus = (userId) => (dispatch) => {
     profile.profileStatusUserIdGET(userId)
     .then (response => {
         dispatch(setStatus(response.data))
-        
     })
 }
 export const updateProfileStatus = (status) => (dispatch) => {
@@ -107,6 +131,26 @@ export const updateProfileStatus = (status) => (dispatch) => {
         if(response.data.resultCode === 0)
         dispatch(setStatus(status)) 
     })
+}
+export const savePhoto = (fileName) => (dispatch) => {
+    profile.profilePhotoUpdatePut(fileName)
+    .then(response => {
+        
+        if(response.data.resultCode === 0)
+        dispatch(updatingPhoto(response.data.data.photos))
+        else
+        console.warn(response.messages) 
+    })
+}
+export const updateProfileData = (newObjData) => async (dispatch) => {
+    let response = await profile.profileUpdatePut(newObjData)
+        console.log(response)
+        if(response.data.resultCode === 0)
+            dispatch(setNewProfileData(newObjData))
+        else {
+            dispatch(stopSubmit("editProfile", {_error : response.data.messages[0]}))
+            return Promise.reject(response.data.messages[0])
+        } 
 }
 export default profileInfoReducer
 

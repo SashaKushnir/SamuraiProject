@@ -1,19 +1,20 @@
-import React from 'react'
-import { BrowserRouter, Route } from 'react-router-dom';
+import React, { Suspense } from 'react'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
 import Music from './components/Music/Music';
 import Navbar from './components/NavBar/Navbar';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
-import UsersContainer from './components/Users/UsersContainer';
-import {initialization} from './components/Redux/appReducer'
+import { initialization } from './components/Redux/appReducer'
 import { connect } from 'react-redux';
 import loader from './images/VAyR.gif'
 import { getIsInitializedSel } from './components/Redux/selectors/selectors';
-import Profile from './components/Profile/Profile';
+const Profile = React.lazy(() => import('./components/Profile/Profile'));
+const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+
 class App extends React.Component {
 
   componentDidMount = () => {
@@ -21,14 +22,13 @@ class App extends React.Component {
   }
 
   render() {
-    
-    if (!this.props.isInitialized){
-      
+    if (!this.props.isInitialized) {
+
       return (
         <div>
-          <img src = {loader}/>
+          <img src={loader} />
         </div>
-        )
+      )
     }
     return (
       <BrowserRouter>
@@ -39,16 +39,29 @@ class App extends React.Component {
 
           <Navbar />
 
+
           <div className="app_wrapper_content">
 
-            <Route path='/dialogs' render={() => <DialogsContainer />} />
-            <Route path='/profile/:userId?' render={() => <Profile />} />
-            <Route path='/news' component={News} />
-            <Route path='/music' component={Music} />
-            <Route path='/users' component={UsersContainer} />
-            <Route path='/settings' component={Settings} />
-            <Route path='/login' render={() => <Login />} />
-
+            <Switch>
+              <Redirect exact from="/" to="/profile" /> 
+                <Route path='/dialogs' render={() =>
+                  <Suspense fallback={<div>Loading...</div>}><DialogsContainer />
+                  </Suspense>} />
+                <Route path='/profile/:userId?' render={() =>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Profile />
+                  </Suspense>
+                } />
+                <Route path='/news' component={News} />
+                <Route path='/music' component={Music} />
+                <Route path='/users' render={() =>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <UsersContainer />
+                  </Suspense>} />
+                <Route path='/settings' component={Settings} />
+                <Route path='/login' render={() => <Login />} />
+                <Route path='*' render={() => <div>Error 404</div>} />
+            </Switch>
           </div>
         </div>
       </BrowserRouter>
@@ -58,10 +71,10 @@ class App extends React.Component {
 
 let mstp = (state) => {
   return {
-    isInitialized : getIsInitializedSel(state)
+    isInitialized: getIsInitializedSel(state)
   }
 }
 
-export default connect (mstp , {initialization})(App);
+export default connect(mstp, { initialization })(App);
 
 

@@ -7,18 +7,20 @@
     ". h h ."
     ". n c ."
   ;
-  grid-template-columns: 1fr 2fr 5fr 1fr ;
-  grid-template-rows: 150px auto;
+  grid-template-columns: 1fr 1fr 5fr 1fr ;
+  grid-template-rows: auto auto;
   grid-gap: 5px;
 }
 .app_wrapper_content{
-  background-color: darkkhaki;
+  background-color: rgb(19, 6, 54);
   grid-area: c; 
 }
  
 .myheader{
   grid-area: h;
-  background-color: chartreuse;
+  background-color: rgb(14, 14, 66);
 }
-
+.AllText{
+    color : white;
+}
 

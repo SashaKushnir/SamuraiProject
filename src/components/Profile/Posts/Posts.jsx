@@ -7,7 +7,7 @@ import {maxLengthCreator, requiredField} from '../../FormControl/Validators/Vali
 import { Mytextarea } from '../../common/Forms/Mytextarea'
 const  maxLength15 = maxLengthCreator(15)
 const Posts =   (props) => {
-  let mapPosts = props.postsObjects.map(obj => <Post postObj={obj} />)
+  let mapPosts = props.postsObjects.map(obj => <Post postObj={obj} key = {obj.id} />)
 
 
 
@@ -18,7 +18,7 @@ const Posts =   (props) => {
  
   return (
     <div>
-      <h3><label for="post"> Posts</label></h3>
+      <h3><label htmlFor="post"> Posts</label></h3>
      
       <div className={s.button}>
         <div>

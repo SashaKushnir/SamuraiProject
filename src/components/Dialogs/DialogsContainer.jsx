@@ -1,5 +1,5 @@
 import React from 'react'
-import { sendingM } from '../Redux/dialogsInfoReducer '
+import { sendingM } from '../Redux/dialogsInfoReducer.ts'
 import Dialogs from './Dialogs'
 import { connect } from 'react-redux'
 import { withRedirect } from '../../hoc/hoc'
@@ -8,8 +8,6 @@ import { getIsAuthSel, getD_MessagesInfoSel, getD_FriendsInfoSel } from '../Redu
 
 
 class DialogsContainer extends React.Component {
-
-
     render() {
         return (
             <div>

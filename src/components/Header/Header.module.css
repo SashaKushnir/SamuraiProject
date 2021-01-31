@@ -1,5 +1,4 @@
 .header{
-  background-color: chartreuse;
  display: grid;
  grid-template-columns: 1fr 3fr 1fr;
 }
@@ -14,8 +13,13 @@
 }
 .Fetching{
   text-align: right;
-  padding: 7px;
-  margin: 4px;  
+  padding-right: 7px;
+  padding-top: 7px;
+  margin: 0px; 
   width: 80px;
   border-radius: 10%;
+}
+.headerLogin{
+  color: rgb(0, 204, 255);
+  font-size: 125%;
 }

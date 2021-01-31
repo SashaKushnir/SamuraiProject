@@ -1,6 +1,7 @@
 
 
-import {getUsersTK, unfollowCircle, followCircle, getUserByCursorTK} from '../Redux/UsersReducer'
+import {getUsersTK, unfollowCircle, followCircle, getUserByCursorTK,getLocalUsersByDimaTK,
+    setNonLocalUsersByDimaTK} from '../Redux/UsersReducer'
 import Users from './Users'
 import { connect } from 'react-redux'
 
@@ -43,14 +44,16 @@ const mapStateToProps = (state) => {
         pageNumber : getPageNumbersSel(state),
         totalUserItems : getTotalUserItemsSel(state),
         isFetching : getIsUserFetchingSel(state),
-        buttonIsEnable : getButtonIsEnableSel(state)
+        buttonIsEnable : getButtonIsEnableSel(state),
+        currentArrayElement : state.usersInfo.currentArrayElement
     }
 
 }
 
 export default compose ( 
  connect(mapStateToProps,
-    {getUsersTK, unfollowCircle, followCircle, getUserByCursorTK})  
+    {getUsersTK, unfollowCircle, followCircle, getUserByCursorTK,getLocalUsersByDimaTK,
+        setNonLocalUsersByDimaTK})  
 )(UserAPIContainer)
 
 
